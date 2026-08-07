@@ -192,7 +192,7 @@ export default function EditProjectPage() {
             if (!mapRef.current.className.includes('maplibregl-map')) {
                 const map = new MapLibreMap({
                     container: 'map',
-                    style: 'https://tacman-services.nilswitt.dev/vector/styles/maptiler-basic/style.json',
+                    style: 'https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_col.json',
                     center: [7.1532, 50.7427],
                     zoom: 15,
                 });
