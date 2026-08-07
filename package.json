@@ -1,0 +1,40 @@
+{
+    "name": "mapcreator-client",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "start": "tsc && vite build && vite preview"
+    },
+    "devDependencies": {
+        "@types/node": "^25.9.3",
+        "@types/react": "^19.2.17",
+        "@types/react-dom": "^19.2.3",
+        "@types/wicg-file-system-access": "^2023.10.7",
+        "typescript": "^6",
+        "vite": "^8.0.16"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.1",
+        "@fortawesome/fontawesome-svg-core": "^7.2.0",
+        "@fortawesome/free-brands-svg-icons": "^7.2.0",
+        "@fortawesome/free-regular-svg-icons": "^7.2.0",
+        "@fortawesome/free-solid-svg-icons": "^7.2.0",
+        "@mui/material": "^9.1.1",
+        "@panzoom/panzoom": "^4.6.2",
+        "@tailwindcss/vite": "^4.3.1",
+        "@types/filesystem": "^0.0.36",
+        "@vitejs/plugin-react": "^6.0.2",
+        "idb-keyval": "^6.2.5",
+        "maplibre-gl": "^5.24.0",
+        "prettier": "^3.8.4",
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
+        "react-zoom-pan-pinch": "^4.0.3",
+        "sass": "^1.101.0"
+    }
+}
