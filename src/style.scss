@@ -141,6 +141,14 @@ html {
     }
 }
 
+.copyrightNotice {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+    color: rgba(0, 0, 0, 0.6);
+}
+
 .context-menu-color-dot {
     display: inline-block;
     width: 12px;
