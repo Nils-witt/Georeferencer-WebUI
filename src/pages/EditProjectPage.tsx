@@ -79,10 +79,10 @@ export default function EditProjectPage() {
         console.log(project);
 
         project.coordinates.forEach((coord, index) => {
-            if (coord.img.x !== 0 && coord.img.y !== 0) {
+            if (coord.img.x !== 0 || coord.img.y !== 0) {
                 DataProvider.getInstance().setImgCoords(index + 1, [coord.img.x, coord.img.y]);
             }
-            if (coord.map.latitude !== 0 && coord.map.longitude !== 0) {
+            if (coord.map.latitude !== 0 || coord.map.longitude !== 0) {
                 DataProvider.getInstance().setMapCoords(
                     index + 1,
                     new LngLat(coord.map.longitude, coord.map.latitude),
