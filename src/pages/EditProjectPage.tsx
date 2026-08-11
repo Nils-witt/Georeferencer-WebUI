@@ -275,6 +275,10 @@ export default function EditProjectPage() {
                     </Table>
                 </TableContainer>
             </Paper>
+
+            <Typography variant="caption" className="copyrightNotice">
+                © {new Date().getFullYear()} Nils Witt
+            </Typography>
         </>
     );
 }
