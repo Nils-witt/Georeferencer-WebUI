@@ -20,7 +20,7 @@ import {
     Typography,
 } from '@mui/material';
 import { type ICoordinatePair, Project } from '../data/entities/Project.ts';
-import { get, set } from 'idb-keyval';
+import { del, get, set } from 'idb-keyval';
 
 const MARKER_IDS = [1, 2, 3, 4];
 const MARKER_COLORS: Record<number, string> = {
@@ -39,6 +39,7 @@ export default function EditProjectPage() {
     // create ref for the map div
     const mapRef = useRef<HTMLDivElement | null>(null);
     const imgRef = useRef<HTMLImageElement | null>(null);
+    const imgFileInputRef = useRef<HTMLInputElement | null>(null);
 
     const [confDirHandle, setConfDirHandle] = useState<FileSystemDirectoryHandle | undefined>(
         undefined,
@@ -49,9 +50,21 @@ export default function EditProjectPage() {
     const [markerPositions, setMarkerPositions] = useState<Map<number, MarkerPosition>>(new Map());
 
     const openDataDirWindow = async () => {
-        const dirHandle = await window.showDirectoryPicker();
+        const dirPickOpts = {
+            mode: 'readwrite',
+        };
+
+        const dirHandle = await window.showDirectoryPicker(dirPickOpts);
         await set('workingDirectory', dirHandle);
         setConfDirHandle(dirHandle);
+    };
+
+    const closeDataDir = async () => {
+        await del('workingDirectory');
+        setConfDirHandle(undefined);
+        setImgUrl(undefined);
+        setMarkerPositions(new Map());
+        DataProvider.getInstance().clear();
     };
 
     useEffect(() => {
@@ -94,6 +107,24 @@ export default function EditProjectPage() {
     const openImg = async (file: File) => {
         const url = URL.createObjectURL(file);
         setImgUrl(url);
+    };
+
+    const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        event.target.value = '';
+        if (!file) {
+            return;
+        }
+
+        if (confDirHandle) {
+            const fileHandle = await confDirHandle.getFileHandle('image.png', { create: true });
+            const writable = await fileHandle.createWritable();
+            await writable.write(file);
+            await writable.close();
+            fileHandle.getFile().then((file) => {
+                openImg(file);
+            });
+        }
     };
 
     const saveConfig = () => {
@@ -226,10 +257,26 @@ export default function EditProjectPage() {
                 </div>
             </div>
             <div className={'controlButtonBox'}>
-                <button onClick={saveConfig} disabled={!confDirHandle}>
-                    Save
-                </button>
-                <button onClick={openDataDirWindow}>Open</button>
+                {confDirHandle ? (
+                    <>
+                        <button onClick={saveConfig} disabled={!confDirHandle}>
+                            Save
+                        </button>
+                        <button onClick={() => imgFileInputRef.current?.click()}>
+                            Upload Image
+                        </button>
+                        <input
+                            ref={imgFileInputRef}
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={uploadImage}
+                        />
+                        <button onClick={closeDataDir}>Close Data Directory</button>
+                    </>
+                ) : (
+                    <button onClick={openDataDirWindow}>Open Data Directory</button>
+                )}
             </div>
 
             <Paper elevation={3} className="markerPositionsBox">

@@ -117,4 +117,13 @@ export class DataProvider {
     public getProjectId(): string | null {
         return this.projectId;
     }
+
+    /**
+     * Clears all stored image and map coordinates and the project id.
+     */
+    public clear(): void {
+        this.imgCoords.clear();
+        this.mapCoords.clear();
+        this.projectId = null;
+    }
 }
