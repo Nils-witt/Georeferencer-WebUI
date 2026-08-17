@@ -226,7 +226,9 @@ export default function EditProjectPage() {
                 </div>
             </div>
             <div className={'controlButtonBox'}>
-                <button onClick={saveConfig}>Save</button>
+                <button onClick={saveConfig} disabled={!confDirHandle}>
+                    Save
+                </button>
                 <button onClick={openDataDirWindow}>Open</button>
             </div>
 
