@@ -223,9 +223,35 @@ export default function EditProjectPage() {
             if (!mapRef.current.className.includes('maplibregl-map')) {
                 const map = new MapLibreMap({
                     container: 'map',
-                    style: 'https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_col.json',
-                    center: [7.1532, 50.7427],
-                    zoom: 15,
+                    style: 'https://vector.bereitschaften-drk-bonn.de/styles/osm-liberty/style.json',
+                    center: localStorage.getItem('mapCenter')
+                        ? JSON.parse(localStorage.getItem('mapCenter')!)
+                        : [7.1532, 50.7427],
+                    zoom: localStorage.getItem('mapZoom')
+                        ? JSON.parse(localStorage.getItem('mapZoom')!)
+                        : 12,
+                });
+                map.on('move', () => {
+                    localStorage.setItem('mapCenter', JSON.stringify(map.getCenter()));
+                    localStorage.setItem('mapZoom', JSON.stringify(map.getZoom()));
+                });
+                map.on('load', () => {
+                    if (!map.getSource('local-tiles')) {
+                        map.addSource('local-tiles', {
+                            type: 'raster',
+                            tiles: ['http://localhost:8080/{z}/{x}/{y}.png'],
+                            tileSize: 256,
+                            minzoom: 10,
+                            maxzoom: 22,
+                        });
+                    }
+                    if (!map.getLayer('local-tiles-layer')) {
+                        map.addLayer({
+                            id: 'local-tiles-layer',
+                            type: 'raster',
+                            source: 'local-tiles',
+                        });
+                    }
                 });
                 new MapController(map);
                 new MapContextMenu(map);
