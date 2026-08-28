@@ -21,6 +21,11 @@ import {
 } from '@mui/material';
 import { type ICoordinatePair, Project } from '../data/entities/Project.ts';
 import { del, get, set } from 'idb-keyval';
+import MapSettingsDialog from '../components/MapSettingsDialog';
+
+const DEFAULT_MAP_STYLE =
+    'https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_col.json';
+const MAP_STYLE_STORAGE_KEY = 'mapStyle';
 
 const MARKER_IDS = [1, 2, 3, 4];
 const MARKER_COLORS: Record<number, string> = {
@@ -48,6 +53,13 @@ export default function EditProjectPage() {
     const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
 
     const [markerPositions, setMarkerPositions] = useState<Map<number, MarkerPosition>>(new Map());
+
+    const mapInstanceRef = useRef<MapLibreMap | null>(null);
+    const isInitialMapStyleRef = useRef(true);
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [mapStyle, setMapStyle] = useState<string>(
+        () => localStorage.getItem(MAP_STYLE_STORAGE_KEY) || DEFAULT_MAP_STYLE,
+    );
 
     const openDataDirWindow = async () => {
         const dirPickOpts = {
@@ -223,7 +235,7 @@ export default function EditProjectPage() {
             if (!mapRef.current.className.includes('maplibregl-map')) {
                 const map = new MapLibreMap({
                     container: 'map',
-                    style: 'https://vector.bereitschaften-drk-bonn.de/styles/osm-liberty/style.json',
+                    style: mapStyle,
                     center: localStorage.getItem('mapCenter')
                         ? JSON.parse(localStorage.getItem('mapCenter')!)
                         : [7.1532, 50.7427],
@@ -235,7 +247,7 @@ export default function EditProjectPage() {
                     localStorage.setItem('mapCenter', JSON.stringify(map.getCenter()));
                     localStorage.setItem('mapZoom', JSON.stringify(map.getZoom()));
                 });
-                map.on('load', () => {
+                map.on('style.load', () => {
                     if (!map.getSource('local-tiles')) {
                         map.addSource('local-tiles', {
                             type: 'raster',
@@ -253,11 +265,22 @@ export default function EditProjectPage() {
                         });
                     }
                 });
+                mapInstanceRef.current = map;
                 new MapController(map);
                 new MapContextMenu(map);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapRef]);
+
+    useEffect(() => {
+        if (isInitialMapStyleRef.current) {
+            isInitialMapStyleRef.current = false;
+            return;
+        }
+        localStorage.setItem(MAP_STYLE_STORAGE_KEY, mapStyle);
+        mapInstanceRef.current?.setStyle(mapStyle);
+    }, [mapStyle]);
 
     useEffect(() => {
         if (imgRef.current) {
@@ -303,7 +326,15 @@ export default function EditProjectPage() {
                 ) : (
                     <button onClick={openDataDirWindow}>Open Data Directory</button>
                 )}
+                <button onClick={() => setSettingsOpen(true)}>Settings</button>
             </div>
+
+            <MapSettingsDialog
+                open={settingsOpen}
+                mapStyle={mapStyle}
+                onClose={() => setSettingsOpen(false)}
+                onSave={setMapStyle}
+            />
 
             <Paper elevation={3} className="markerPositionsBox">
                 <Typography variant="subtitle2" sx={{ p: 1, pb: 0 }}>
