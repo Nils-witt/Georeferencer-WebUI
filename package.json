@@ -20,7 +20,7 @@
         "@types/react-dom": "^19.2.5",
         "@types/wicg-file-system-access": "^2023.10.7",
         "husky": "^9.1.7",
-        "lint-staged": "^17.3.0",
+        "lint-staged": "^17.4.1",
         "oxlint": "^1.78.0",
         "typescript": "^7",
         "vite": "^8.2.2"
