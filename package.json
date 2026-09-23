@@ -42,7 +42,7 @@
         "prettier": "^3.9.8",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
-        "react-zoom-pan-pinch": "^4.0.4",
+        "react-zoom-pan-pinch": "^4.2.0",
         "sass": "^1.104.1"
     },
     "lint-staged": {
