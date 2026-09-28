@@ -15,15 +15,15 @@
         "prepare": "husky"
     },
     "devDependencies": {
-        "@types/node": "^26.3.0",
-        "@types/react": "^19.2.18",
-        "@types/react-dom": "^19.2.5",
+        "@types/node": "^26.6.1",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
         "@types/wicg-file-system-access": "^2023.10.7",
         "husky": "^9.1.7",
-        "lint-staged": "^17.3.0",
-        "oxlint": "^1.78.0",
+        "lint-staged": "^17.5.1",
+        "oxlint": "^1.83.0",
         "typescript": "^7",
-        "vite": "^8.2.2"
+        "vite": "^8.3.0"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -32,18 +32,18 @@
         "@fortawesome/free-brands-svg-icons": "^7.3.1",
         "@fortawesome/free-regular-svg-icons": "^7.3.1",
         "@fortawesome/free-solid-svg-icons": "^7.3.1",
-        "@mui/material": "^9.3.1",
+        "@mui/material": "^9.4.0",
         "@panzoom/panzoom": "^4.6.2",
         "@tailwindcss/vite": "^4.3.3",
         "@types/filesystem": "^0.0.36",
-        "@vitejs/plugin-react": "^6.1.0",
+        "@vitejs/plugin-react": "^6.1.1",
         "idb-keyval": "^6.3.0",
-        "maplibre-gl": "^6.6.0",
-        "prettier": "^3.9.6",
-        "react": "^19.2.8",
-        "react-dom": "^19.2.8",
-        "react-zoom-pan-pinch": "^4.0.4",
-        "sass": "^1.103.1"
+        "maplibre-gl": "^6.10.0",
+        "prettier": "^3.9.8",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "react-zoom-pan-pinch": "^4.2.0",
+        "sass": "^1.104.1"
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx}": [
