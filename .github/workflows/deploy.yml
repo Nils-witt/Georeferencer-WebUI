@@ -1,50 +1,68 @@
 name: Deploy static content to Pages
 
 on:
-    # Runs on pushes targeting the default branch
     push:
-        branches:
-            - main
+        branches: [main]
+        paths-ignore:
+            - '**.md'
+            - '.github/ISSUE_TEMPLATE/**'
+            - '.github/dependabot.yml'
+    workflow_dispatch:
 
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
     contents: read
-    pages: write
-    id-token: write
 
-# Allow one concurrent deployment
+# Queue deployments; never cancel one that is already running
 concurrency:
-    group: 'pages'
-    cancel-in-progress: true
+    group: pages
+    cancel-in-progress: false
+
+env:
+    HUSKY: 0
 
 jobs:
-    # Single deploy job since we're just deploying
-    deploy:
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
+    build:
         runs-on: ubuntu-latest
+        timeout-minutes: 10
         steps:
             - name: Checkout
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+              with:
+                  persist-credentials: false
+
             - name: Set up Node
               uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
               with:
-                  node-version: lts/*
-                  cache: 'npm'
+                  node-version: 24
+                  cache: npm
+
             - name: Install dependencies
-              run: npm ci
+              run: npm ci --no-audit --no-fund
+
+            - name: Setup Pages
+              uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+
             - name: Build
               run: npm run build
               env:
                   VITE_BASE: '/Georeferencer-WebUI/'
-            - name: Setup Pages
-              uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+
             - name: Upload artifact
               uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
               with:
-                  # Upload dist folder
-                  path: './dist'
+                  path: ./dist
+
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        permissions:
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
             - name: Deploy to GitHub Pages
               id: deployment
               uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5

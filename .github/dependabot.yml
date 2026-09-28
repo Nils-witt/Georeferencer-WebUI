@@ -8,4 +8,20 @@ updates:
     - package-ecosystem: 'npm' # See documentation for possible values
       directory: '/' # Location of package manifests
       schedule:
-          interval: 'daily'
+          interval: 'weekly'
+      groups:
+          npm-minor-patch:
+              update-types: ['minor', 'patch']
+
+    - package-ecosystem: 'github-actions'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+      groups:
+          actions:
+              patterns: ['*']
+
+    - package-ecosystem: 'docker'
+      directory: '/'
+      schedule:
+          interval: 'weekly'

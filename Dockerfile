@@ -1,10 +1,12 @@
 FROM node:24-bookworm AS builder
 
 WORKDIR /app
+ENV HUSKY=0
 
-COPY package.json .
+# Install dependencies in their own layer so it is cached until the lockfile changes
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
 
-RUN npm install
 COPY . .
 RUN npm run build
 
