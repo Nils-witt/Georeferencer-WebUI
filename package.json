@@ -15,15 +15,15 @@
         "prepare": "husky"
     },
     "devDependencies": {
-        "@types/node": "^26.6.3",
+        "@types/node": "^26.6.4",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "@types/wicg-file-system-access": "^2023.10.7",
         "husky": "^9.1.7",
         "lint-staged": "^17.6.0",
-        "oxlint": "^1.86.0",
+        "oxlint": "^1.87.0",
         "typescript": "^7",
-        "vite": "^8.3.1"
+        "vite": "^8.3.3"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
@@ -36,14 +36,14 @@
         "@panzoom/panzoom": "^4.6.2",
         "@tailwindcss/vite": "^4.3.3",
         "@types/filesystem": "^0.0.36",
-        "@vitejs/plugin-react": "^6.1.1",
+        "@vitejs/plugin-react": "^6.1.2",
         "idb-keyval": "^6.3.0",
-        "maplibre-gl": "^6.11.2",
+        "maplibre-gl": "^6.13.0",
         "prettier": "^3.9.9",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
         "react-zoom-pan-pinch": "^4.2.0",
-        "sass": "^1.105.0"
+        "sass": "^1.105.1"
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx}": [
